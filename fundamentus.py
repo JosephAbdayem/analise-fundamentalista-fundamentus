@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import re
 import urllib.request
 import urllib.parse
@@ -23,8 +21,7 @@ def get_data(*args, **kwargs):
     url = 'http://www.fundamentus.com.br/resultado.php'
     cookie_jar = http.cookiejar.CookieJar()
     opener = urllib.request.build_opener(
-        urllib.request.HTTPSHandler(
-            context=ssl.create_default_context(cafile=certifi.where())),
+        urllib.request.HTTPSHandler(context=ssl.create_default_context(cafile=certifi.where())),
         urllib.request.HTTPCookieProcessor(cookie_jar)
     )
     opener.addheaders = [('User-agent', 'Mozilla/5.0 (Windows; U; Windows NT 6.1; rv:2.2) Gecko/20110201'),
@@ -96,26 +93,28 @@ def parse_data(page):
     result = OrderedDict()
 
     for rows in page.xpath('tbody')[0].findall("tr"):
-        result.update({rows.getchildren()[0][0].getchildren()[0].text: {'Cotacao': to_decimal(rows.getchildren()[1].text),
-                                                                        'P/L': to_decimal(rows.getchildren()[2].text),
-                                                                        'P/VP': to_decimal(rows.getchildren()[3].text),
-                                                                        'PSR': to_decimal(rows.getchildren()[4].text),
-                                                                        'DY': to_decimal(rows.getchildren()[5].text),
-                                                                        'P/Ativo': to_decimal(rows.getchildren()[6].text),
-                                                                        'P/Cap.Giro': to_decimal(rows.getchildren()[7].text),
-                                                                        'P/EBIT': to_decimal(rows.getchildren()[8].text),
-                                                                        'P/ACL': to_decimal(rows.getchildren()[9].text),
-                                                                        'EV/EBIT': to_decimal(rows.getchildren()[10].text),
-                                                                        'EV/EBITDA': to_decimal(rows.getchildren()[11].text),
-                                                                        'Mrg.Ebit': to_decimal(rows.getchildren()[12].text),
-                                                                        'Mrg.Liq.': to_decimal(rows.getchildren()[13].text),
-                                                                        'Liq.Corr.': to_decimal(rows.getchildren()[14].text),
-                                                                        'ROIC': to_decimal(rows.getchildren()[15].text),
-                                                                        'ROE': to_decimal(rows.getchildren()[16].text),
-                                                                        'Liq.2meses': to_decimal(rows.getchildren()[17].text),
-                                                                        'Pat.Liq': to_decimal(rows.getchildren()[18].text),
-                                                                        'Div.Brut/Pat.': to_decimal(rows.getchildren()[19].text),
-                                                                        'Cresc.5anos': to_decimal(rows.getchildren()[20].text)}})
+        result.update({rows.getchildren()[0][0].getchildren()[0].text: {
+            'Cotacao': to_decimal(rows.getchildren()[1].text),
+            'P/L': to_decimal(rows.getchildren()[2].text),
+            'P/VP': to_decimal(rows.getchildren()[3].text),
+            'PSR': to_decimal(rows.getchildren()[4].text),
+            'DY': to_decimal(rows.getchildren()[5].text),
+            'P/Ativo': to_decimal(rows.getchildren()[6].text),
+            'P/Cap.Giro': to_decimal(rows.getchildren()[7].text),
+            'P/EBIT': to_decimal(rows.getchildren()[8].text),
+            'P/ACL': to_decimal(rows.getchildren()[9].text),
+            'EV/EBIT': to_decimal(rows.getchildren()[10].text),
+            'EV/EBITDA': to_decimal(rows.getchildren()[11].text),
+            'Mrg.Ebit': to_decimal(rows.getchildren()[12].text),
+            'Mrg.Liq.': to_decimal(rows.getchildren()[13].text),
+            'Liq.Corr.': to_decimal(rows.getchildren()[14].text),
+            'ROIC': to_decimal(rows.getchildren()[15].text),
+            'ROE': to_decimal(rows.getchildren()[16].text),
+            'Liq.2meses': to_decimal(rows.getchildren()[17].text),
+            'Pat.Liq': to_decimal(rows.getchildren()[18].text),
+            'Div.Brut/Pat.': to_decimal(rows.getchildren()[19].text),
+            'Cresc.5anos': to_decimal(rows.getchildren()[20].text)
+        }})
 
     return result
 
@@ -195,7 +194,7 @@ def analyze_stocks(stocks):
 
 
 if __name__ == '__main__':
-    from waitingbar import WaitingBar
+    from waiting_bar import WaitingBar
 
     progress_bar = WaitingBar('[*] Downloading...')
     result = analyze_stocks(get_data())

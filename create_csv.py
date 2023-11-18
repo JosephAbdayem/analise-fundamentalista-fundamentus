@@ -1,40 +1,40 @@
 from fundamentus import analyze_stocks, get_data
 import pandas as pd
-import waitingbar
-
+import waiting_bar
 
 def data_to_csv():
+    """
+    Coleta dados do Fundamentus e os grava em um arquivo CSV chamado 'dados.csv'.
+    """
     data = get_data()
-    data = {outer_k: {inner_k: float(inner_v) for inner_k, inner_v in outer_v.items(
-    )} for outer_k, outer_v in data.items()}
+    formatted_data = {outer_key: {inner_key: float(inner_value) 
+                                  for inner_key, inner_value in outer_value.items()}
+                      for outer_key, outer_value in data.items()}
 
-    df_data = pd.DataFrame.from_dict(data).transpose().reset_index()  # transposing
-    # rename 'index' columns to 'ticker'
-    df_data = df_data.rename(columns={'index': 'Ticker'})
-    df_data.to_csv(r'dados.csv', sep=';',
-                   index=False, mode='w')  # save csv
+    df = pd.DataFrame.from_dict(formatted_data).transpose().rename(columns={'index': 'Ticker'})
+    df.to_csv('dados.csv', sep=';', index=False)
 
 def data_to_csv_filtrados():
+    """
+    Coleta e filtra dados do Fundamentus usando a função analyze_stocks,
+    gravando os resultados em 'dados_filtrados.csv'.
+    """
     data = analyze_stocks(get_data())
-    data = {outer_k: {inner_k: float(inner_v) for inner_k, inner_v in outer_v.items(
-    )} for outer_k, outer_v in data.items()}
+    formatted_data = {outer_key: {inner_key: float(inner_value) 
+                                  for inner_key, inner_value in outer_value.items()}
+                      for outer_key, outer_value in data.items()}
 
-    df_data = pd.DataFrame.from_dict(data).transpose().reset_index()  # transposing
-    # rename 'index' columns to 'ticker'
-    df_data = df_data.rename(columns={'index': 'Ticker'})
-    df_data.to_csv(r'dados_filtrados.csv', sep=';',
-                   index=False, mode='w')  # save csv
+    df = pd.DataFrame.from_dict(formatted_data).transpose().rename(columns={'index': 'Ticker'})
+    df.to_csv('dados_filtrados.csv', sep=';', index=False)
 
 if __name__ == '__main__':
-
-    overwrite_msg = input(
-        'Do you want to create a csv file with the most updated data from Fundamentus? Will overwrite the existing data. Key "Y" to yes: ')
+    overwrite_msg = input('Deseja criar um arquivo CSV com os dados mais atualizados do Fundamentus? Isso sobrescreverá os dados existentes. Pressione "Y" para sim: ')
 
     if overwrite_msg.upper() == 'Y':
-        start_msg = waitingbar.WaitingBar('Starting download data...')
+        start_msg = waiting_bar.WaitingBar('Iniciando download de dados...')
         data_to_csv()
         data_to_csv_filtrados()
         start_msg.stop()
-        print('Check data at "funamentus.csv" file.')
+        print('Confira os dados no arquivo "funamentus.csv".')
 
-    input('Press any key to close.')
+    input('Pressione qualquer tecla para fechar.')

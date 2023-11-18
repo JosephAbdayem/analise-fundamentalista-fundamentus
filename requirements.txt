@@ -1,0 +1,8 @@
+Flask
+itsdangerous
+Jinja2
+lxml
+MarkupSafe
+Werkzeug
+flask_cors
+certifi
